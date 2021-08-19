@@ -12,111 +12,122 @@ import {
   TextArea,
 } from 'semantic-ui-react';
 
-export default function ProgramForm() {
-  const [program, setProgram] = useState({
-    programManagers: '',
-  });
-  const ValidationSchema = Yup.object().shape({
-    programManagers: Yup.array().required('Please enter the program manager'),
-  });
+const ValidationSchema = Yup.object().shape({
+  programManagers: Yup.array().required('Please enter the program manager'),
+});
 
-  const organizations = [
-    {
-      key: 'af',
-      value: 'af',
-      text: 'Afghanistan',
-      image: {
-        avatar: true,
-        src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-      },
+const organizations = [
+  {
+    key: 'af',
+    value: 'af',
+    text: 'Afghanistan',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
     },
-    {
-      key: 'dz',
-      value: 'dz',
-      text: 'Algeria',
-      image: {
-        avatar: true,
-        src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-      },
+  },
+  {
+    key: 'dz',
+    value: 'dz',
+    text: 'Algeria',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
     },
-    {
-      key: 'as',
-      value: 'as',
-      text: 'American Samoa',
-      image: {
-        avatar: true,
-        src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-      },
+  },
+  {
+    key: 'as',
+    value: 'as',
+    text: 'American Samoa',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
     },
-    {
-      key: 'ad',
-      value: 'ad',
-      text: 'Andorra',
-      image: {
-        avatar: true,
-        src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-      },
+  },
+  {
+    key: 'ad',
+    value: 'ad',
+    text: 'Andorra',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
     },
-    {
-      key: 'ao',
-      value: 'ao',
-      text: 'Angola',
-      image: {
-        avatar: true,
-        src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-      },
+  },
+  {
+    key: 'ao',
+    value: 'ao',
+    text: 'Angola',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
     },
-    {
-      key: 'bd',
-      value: 'bd',
-      text: 'Bangladesh',
-      image: {
-        avatar: true,
-        src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-      },
+  },
+  {
+    key: 'bd',
+    value: 'bd',
+    text: 'Bangladesh',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
     },
-  ];
+  },
+];
+
+export default function ProgramManagersForm({
+  programValues,
+  handleProgramChange,
+  nextStep,
+  prevStep,
+}) {
+  const next = (e) => {
+    e.preventDefault();
+    nextStep();
+  };
+  const back = (e) => {
+    e.preventDefault();
+    prevStep();
+  };
   return (
-    <Segment padded='very'>
-      <Header as='h2' textAlign='center'>
+    <Segment padded='very' className='container'>
+      <Header as='h2' color='blue'>
         Program managers
       </Header>
-      <Header as='h5' color='grey' textAlign='center'>
+      <Header as='h3' color='grey'>
         The program manager, is the one in charge to run the program during a
         specific period of time.
       </Header>
       <Divider />
       <Formik
-        initialValues={program}
+        initialValues={{ programManagers: programValues.programManagers || '' }}
         validationSchema={ValidationSchema}
         enableReinitialize
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
-          setProgram({
-            organization: values.organization,
-            programName: values.programName,
-            description: values.description,
-            imageURL: values.imageURL,
-            status: values.status,
-            programManagers: values.programManagers,
-          });
+          console.log(values);
           setSubmitting(false);
         }}
       >
-        {({ errors, touched, handleSubmit, handleBlur, isSubmitting }) => (
+        {({
+          errors,
+          touched,
+          handleSubmit,
+          handleBlur,
+          isSubmitting,
+          values,
+        }) => (
           <Form onSubmit={handleSubmit}>
             <Form.Field>
               <label htmlFor='programManagers'>Program managers</label>
               <Dropdown
                 onChange={(_, { value }) => {
-                  console.log(value);
-                  setProgram({ ...program, programManagers: value });
+                  handleProgramChange('programManagers', value);
                 }}
                 onBlur={handleBlur}
                 name='programManagers'
                 options={organizations}
                 selection
                 multiple
+                defaultValue={values.programManagers}
               />
               {errors.programManagers && touched.programManagers ? (
                 <Label basic color='red' pointing>
@@ -130,14 +141,24 @@ export default function ProgramForm() {
                 floated='right'
                 color='blue'
                 disabled={isSubmitting}
+                onClick={next}
               >
                 Next
               </Button>
+              <Button type='submit' floated='left' color='blue' onClick={back}>
+                Back
+              </Button>
             </div>
-            <pre>{JSON.stringify(program)}</pre>
           </Form>
         )}
       </Formik>
+      <style jsx>{`
+                      .button {
+                        width: 720px;
+                        display: "flex",
+                        justifyContent: "center",
+                      }
+                    `}</style>
     </Segment>
   );
 }

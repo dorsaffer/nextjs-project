@@ -12,7 +12,7 @@ import {
   List,
 } from 'semantic-ui-react';
 
-export default function ProgramForm() {
+export default function Confirmation({ prevStep }) {
   const [program, setProgram] = useState({
     organization: { slug: 'think-it' },
     programName: 'IOT',
@@ -23,13 +23,16 @@ export default function ProgramForm() {
     path: [{ courses: [''] }, { courses: [''] }, { courses: [''] }],
     programManagers: ['p1', 'p2'],
   });
-
+  const back = (e) => {
+    e.preventDefault();
+    prevStep();
+  };
   return (
-    <Segment padded='very'>
-      <Header as='h2' textAlign='center'>
+    <Segment padded='very' className='container'>
+      <Header as='h2' color='blue'>
         Validation
       </Header>
-      <Header as='h5' color='grey' textAlign='center'>
+      <Header as='h3' color='grey'>
         The program manager, is the one in charge to run the program during a
         specific period of time.
       </Header>
@@ -77,9 +80,19 @@ export default function ProgramForm() {
           </List.Item>
         ))}
       </List>
-      <Button type='submit' floated='right' color='blue'>
-        Next
+      <Button type='submit' floated='left' color='blue' onClick={back}>
+        Back
       </Button>
+      <Button type='submit' floated='right' color='blue'>
+        Finish
+      </Button>
+      <style jsx>{`
+                      .button {
+                        width: 720px;
+                        display: "flex",
+                        justifyContent: "center",
+                      }
+                    `}</style>
     </Segment>
   );
 }
