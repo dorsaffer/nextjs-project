@@ -4,6 +4,68 @@ import ProgramInfoForm from './programInfoForm';
 import PathStep from './PathStep';
 import Confirmation from './confirmation';
 
+const programManagersList = [
+  {
+    key: 'af',
+    value: 'af',
+    text: 'Afghanistan',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
+    },
+  },
+  {
+    key: 'dz',
+    value: 'dz',
+    text: 'Algeria',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
+    },
+  },
+  {
+    key: 'as',
+    value: 'as',
+    text: 'American Samoa',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
+    },
+  },
+  {
+    key: 'ad',
+    value: 'ad',
+    text: 'Andorra',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
+    },
+  },
+  {
+    key: 'ao',
+    value: 'ao',
+    text: 'Angola',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
+    },
+  },
+  {
+    key: 'bd',
+    value: 'bd',
+    text: 'Bangladesh',
+    image: {
+      avatar: true,
+      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
+    },
+  },
+];
+const coursesList = [
+  { key: 'm', text: 'React', value: 'React' },
+  { key: 'f', text: 'angular', value: 'angular' },
+  { key: 'o', text: 'nextjs', value: 'nextjs' },
+];
+
 export default function CreateForm() {
   const [step, setStep] = useState(1);
   const [program, setProgram] = useState({
@@ -19,7 +81,6 @@ export default function CreateForm() {
   // Proceed to next step of the form
   const handleNextStep = () => {
     setStep(step + 1);
-    console.log('step', step);
   };
 
   // Get back to the last step of the form
@@ -29,11 +90,9 @@ export default function CreateForm() {
 
   // Handle program state change
   const handleChange = (input, value) => {
-    console.log('input', input, 'value', value);
     setProgram({ ...program, [input]: value });
-    console.log(program);
   };
-  console.log(program);
+
   const {
     organization,
     programName,
@@ -69,6 +128,7 @@ export default function CreateForm() {
           prevStep={handlePrevStep}
           handleProgramChange={handleChange}
           programValues={values}
+          initialCoursesList={coursesList}
         />
       );
     case 3:
@@ -78,6 +138,7 @@ export default function CreateForm() {
           prevStep={handlePrevStep}
           handleProgramChange={handleChange}
           programValues={values}
+          programManagersList={programManagersList}
         />
       );
     case 4:
@@ -85,7 +146,7 @@ export default function CreateForm() {
         <Confirmation
           prevStep={handlePrevStep}
           handleChange={handleChange}
-          values={values}
+          programValues={values}
         />
       );
     default:

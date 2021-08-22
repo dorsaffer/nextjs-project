@@ -48,11 +48,9 @@ export default function ProgramInfoForm({
   };
 
   return (
-    <Segment padded='very' className='container'>
-      <Header as='h2' color='blue'>
-        Create Program
-      </Header>
-      <Header as='h3' color='grey'>
+    <Segment style={{ width: 720, margin: '0 auto' }}>
+      <Header as='h2'>Create Program</Header>
+      <Header as='h3' size='small' color='grey' style={{ marginTop: 0 }}>
         A program is a set of courses, ordered in a learning path, to teach
         specific skills.
       </Header>
@@ -69,9 +67,12 @@ export default function ProgramInfoForm({
         enableReinitialize
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
+          console.log(programValues);
+          nextStep();
+          setSubmitting(true);
         }}
       >
-        {({ errors, touched, values, handleSubmit, handleBlur }) => (
+        {({ errors, touched, values, handleSubmit, handleBlur, isValid }) => (
           <Form onSubmit={handleSubmit}>
             <Form.Field>
               <label htmlFor='organization'>Organization</label>
@@ -163,21 +164,13 @@ export default function ProgramInfoForm({
               className='button'
               floated='right'
               color='blue'
-              onClick={next}
             >
               Next
             </Button>
+            <pre>{JSON.stringify(values, null, 2)}</pre>
           </Form>
         )}
       </Formik>
-      <style jsx>{`
-                      .container {
-                        width: 720px;
-                        display: "flex",
-                        justifyContent: "center",
-                      }
-
-                    `}</style>
     </Segment>
   );
 }

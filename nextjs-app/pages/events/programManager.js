@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Formik, Field } from 'formik';
+import React from 'react';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
   Button,
@@ -9,80 +9,19 @@ import {
   Header,
   Label,
   Segment,
-  TextArea,
 } from 'semantic-ui-react';
 
-const ValidationSchema = Yup.object().shape({
+const validationSchema = Yup.object().shape({
   programManagers: Yup.array().required('Please enter the program manager'),
 });
-
-const organizations = [
-  {
-    key: 'af',
-    value: 'af',
-    text: 'Afghanistan',
-    image: {
-      avatar: true,
-      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-    },
-  },
-  {
-    key: 'dz',
-    value: 'dz',
-    text: 'Algeria',
-    image: {
-      avatar: true,
-      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-    },
-  },
-  {
-    key: 'as',
-    value: 'as',
-    text: 'American Samoa',
-    image: {
-      avatar: true,
-      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-    },
-  },
-  {
-    key: 'ad',
-    value: 'ad',
-    text: 'Andorra',
-    image: {
-      avatar: true,
-      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-    },
-  },
-  {
-    key: 'ao',
-    value: 'ao',
-    text: 'Angola',
-    image: {
-      avatar: true,
-      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-    },
-  },
-  {
-    key: 'bd',
-    value: 'bd',
-    text: 'Bangladesh',
-    image: {
-      avatar: true,
-      src: 'https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg',
-    },
-  },
-];
 
 export default function ProgramManagersForm({
   programValues,
   handleProgramChange,
   nextStep,
   prevStep,
+  programManagersList,
 }) {
-  const next = (e) => {
-    e.preventDefault();
-    nextStep();
-  };
   const back = (e) => {
     e.preventDefault();
     prevStep();
@@ -99,12 +38,10 @@ export default function ProgramManagersForm({
       <Divider />
       <Formik
         initialValues={{ programManagers: programValues.programManagers || '' }}
-        validationSchema={ValidationSchema}
+        validationSchema={validationSchema}
         enableReinitialize
-        onSubmit={(values, { setSubmitting }) => {
-          setSubmitting(true);
-          console.log(values);
-          setSubmitting(false);
+        onSubmit={() => {
+          nextStep();
         }}
       >
         {({
@@ -124,7 +61,7 @@ export default function ProgramManagersForm({
                 }}
                 onBlur={handleBlur}
                 name='programManagers'
-                options={organizations}
+                options={programManagersList}
                 selection
                 multiple
                 defaultValue={values.programManagers}
@@ -136,13 +73,7 @@ export default function ProgramManagersForm({
               ) : null}
             </Form.Field>
             <div>
-              <Button
-                type='submit'
-                floated='right'
-                color='blue'
-                disabled={isSubmitting}
-                onClick={next}
-              >
+              <Button type='submit' floated='right' color='blue'>
                 Next
               </Button>
               <Button type='submit' floated='left' color='blue' onClick={back}>
@@ -152,13 +83,6 @@ export default function ProgramManagersForm({
           </Form>
         )}
       </Formik>
-      <style jsx>{`
-                      .button {
-                        width: 720px;
-                        display: "flex",
-                        justifyContent: "center",
-                      }
-                    `}</style>
     </Segment>
   );
 }
