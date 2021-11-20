@@ -1,6 +1,6 @@
 import { EventItem } from './event-item';
 import classes from './event-list.module.css';
-export function EventList(props) {
+export  function EventList(props) {
   const { items } = props;
   return (
     <ul className={classes.list}>

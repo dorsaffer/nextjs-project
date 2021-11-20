@@ -19,7 +19,6 @@ export function EventItem(props) {
       <div className={classes.container}>
         <div className={classes.summary}>
           <h2>{title}</h2>
-
           <div className={classes.date}>
             <DateIcon />
             <time>{formattedDate}</time>

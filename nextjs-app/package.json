@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.16.4",
     "formik": "^2.2.9",
     "formik-semantic-ui-react": "^2.0.0",
     "next": "11.0.0",
